@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { createService } from "../supabase/service";
+import { revalidatePath } from "next/cache";
 
 const teamMemberSchema = z.object({
   full_name: z.string(),
@@ -95,6 +96,8 @@ export async function addTeamMember(formData:FormData){
       data: null
     }
   }
+
+  revalidatePath("/dashboard/team");
 
   // return a null error array and the data property
   return {

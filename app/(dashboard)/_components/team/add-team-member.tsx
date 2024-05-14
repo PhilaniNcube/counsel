@@ -18,6 +18,8 @@ import { PlusIcon } from "lucide-react";
 import { addTeamMember } from "@/utils/actions/team";
 import { SubmitButton } from "@/components/submit-button";
 import { toast } from "sonner";
+import { startTransition } from "react";
+import { useRouter } from "next/navigation";
 
 
 const teamMemberSchema = z.object({
@@ -25,11 +27,15 @@ const teamMemberSchema = z.object({
   email: z.string().email(),
 })
 
+type AddTeamMemberProps = {
+  setOpen: (open:boolean) => void
+}
 
 
 
+const AddTeamMember = ({setOpen}:AddTeamMemberProps) => {
 
-const AddTeamMember = () => {
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof teamMemberSchema>>({
     resolver: zodResolver(teamMemberSchema),
@@ -45,9 +51,13 @@ const AddTeamMember = () => {
     formData.append("full_name", values.full_name);
     formData.append("email", values.email);
 
-    await addTeamMember(formData)
 
-    toast('Please wait while we add the team member')
+    startTransition(() => {
+       addTeamMember(formData)
+      toast('Please wait while we add the team member')
+      setOpen(false);
+      router.refresh();
+    })
 
   }
 

@@ -24,6 +24,9 @@ type TeamProps = {
 }
 
 const Team = ({ members }: TeamProps) => {
+
+  const [open, setOpen] = useState(false);
+
 	return (
 		<Card className="w-full max-w-5xl mx-auto">
 			<CardHeader>

@@ -9,6 +9,110 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      case_costs: {
+        Row: {
+          cost: number
+          created_at: string
+          description: string
+          id: number
+          title: string
+        }
+        Insert: {
+          cost: number
+          created_at?: string
+          description: string
+          id?: number
+          title: string
+        }
+        Update: {
+          cost?: number
+          created_at?: string
+          description?: string
+          id?: number
+          title?: string
+        }
+        Relationships: []
+      }
+      cases: {
+        Row: {
+          case_number: string
+          client_id: number
+          completed: boolean
+          created_at: string
+          description: string
+          end_date: string | null
+          id: number
+          start_date: string
+        }
+        Insert: {
+          case_number: string
+          client_id: number
+          completed?: boolean
+          created_at?: string
+          description: string
+          end_date?: string | null
+          id?: number
+          start_date: string
+        }
+        Update: {
+          case_number?: string
+          client_id?: number
+          completed?: boolean
+          created_at?: string
+          description?: string
+          end_date?: string | null
+          id?: number
+          start_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cases_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contacts: {
+        Row: {
+          address: string
+          company: string | null
+          contact_type: Database["public"]["Enums"]["contact_type"]
+          created_at: string
+          email: string
+          first_name: string
+          id: number
+          last_name: string
+          phone: string
+          updated_at: string | null
+        }
+        Insert: {
+          address: string
+          company?: string | null
+          contact_type: Database["public"]["Enums"]["contact_type"]
+          created_at?: string
+          email: string
+          first_name: string
+          id?: number
+          last_name: string
+          phone: string
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string
+          company?: string | null
+          contact_type?: Database["public"]["Enums"]["contact_type"]
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: number
+          last_name?: string
+          phone?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       members: {
         Row: {
           created_at: string
@@ -42,7 +146,7 @@ export type Database = {
           {
             foreignKeyName: "members_profile_id_fkey"
             columns: ["profile_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -54,24 +158,24 @@ export type Database = {
           created_at: string
           id: number
           name: string
-          phone: string | null
-          website: string | null
+          phone: string
+          website: string
         }
         Insert: {
           admin_id?: string
           created_at?: string
           id?: number
           name: string
-          phone?: string | null
-          website?: string | null
+          phone: string
+          website: string
         }
         Update: {
           admin_id?: string
           created_at?: string
           id?: number
           name?: string
-          phone?: string | null
-          website?: string | null
+          phone?: string
+          website?: string
         }
         Relationships: [
           {
@@ -85,20 +189,20 @@ export type Database = {
       }
       profiles: {
         Row: {
-          email: string | null
-          full_name: string | null
+          email: string
+          full_name: string
           id: string
           updated_at: string | null
         }
         Insert: {
-          email?: string | null
-          full_name?: string | null
+          email: string
+          full_name: string
           id: string
           updated_at?: string | null
         }
         Update: {
-          email?: string | null
-          full_name?: string | null
+          email?: string
+          full_name?: string
           id?: string
           updated_at?: string | null
         }
@@ -112,6 +216,51 @@ export type Database = {
           },
         ]
       }
+      tasks: {
+        Row: {
+          assignee: number
+          case_id: number
+          created_at: string
+          description: string
+          id: number
+          status: Database["public"]["Enums"]["task_status"]
+          title: string
+        }
+        Insert: {
+          assignee: number
+          case_id: number
+          created_at?: string
+          description: string
+          id?: number
+          status?: Database["public"]["Enums"]["task_status"]
+          title: string
+        }
+        Update: {
+          assignee?: number
+          case_id?: number
+          created_at?: string
+          description?: string
+          id?: number
+          status?: Database["public"]["Enums"]["task_status"]
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_assignee_fkey"
+            columns: ["assignee"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -120,8 +269,10 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      contact_type: "client" | "potential client" | "opposing counsel"
       roles: "admin" | "manager" | "member"
       status: "pending" | "active" | "removed"
+      task_status: "not started" | "in progress" | "completed"
     }
     CompositeTypes: {
       [_ in never]: never
