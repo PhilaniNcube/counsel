@@ -15,6 +15,7 @@ export type Database = {
           created_at: string
           description: string
           id: number
+          org_id: number
           title: string
         }
         Insert: {
@@ -22,6 +23,7 @@ export type Database = {
           created_at?: string
           description: string
           id?: number
+          org_id: number
           title: string
         }
         Update: {
@@ -29,9 +31,18 @@ export type Database = {
           created_at?: string
           description?: string
           id?: number
+          org_id?: number
           title?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "case_costs_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organization"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       cases: {
         Row: {
@@ -42,6 +53,7 @@ export type Database = {
           description: string
           end_date: string | null
           id: number
+          org_id: number | null
           start_date: string
         }
         Insert: {
@@ -52,6 +64,7 @@ export type Database = {
           description: string
           end_date?: string | null
           id?: number
+          org_id?: number | null
           start_date: string
         }
         Update: {
@@ -62,6 +75,7 @@ export type Database = {
           description?: string
           end_date?: string | null
           id?: number
+          org_id?: number | null
           start_date?: string
         }
         Relationships: [
@@ -70,6 +84,13 @@ export type Database = {
             columns: ["client_id"]
             isOneToOne: false
             referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cases_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organization"
             referencedColumns: ["id"]
           },
         ]
@@ -84,6 +105,7 @@ export type Database = {
           first_name: string
           id: number
           last_name: string
+          org_id: number
           phone: string
           updated_at: string | null
         }
@@ -96,6 +118,7 @@ export type Database = {
           first_name: string
           id?: number
           last_name: string
+          org_id: number
           phone: string
           updated_at?: string | null
         }
@@ -108,10 +131,19 @@ export type Database = {
           first_name?: string
           id?: number
           last_name?: string
+          org_id?: number
           phone?: string
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "contacts_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organization"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       members: {
         Row: {
@@ -223,6 +255,7 @@ export type Database = {
           created_at: string
           description: string
           id: number
+          org_id: number
           status: Database["public"]["Enums"]["task_status"]
           title: string
         }
@@ -232,6 +265,7 @@ export type Database = {
           created_at?: string
           description: string
           id?: number
+          org_id: number
           status?: Database["public"]["Enums"]["task_status"]
           title: string
         }
@@ -241,6 +275,7 @@ export type Database = {
           created_at?: string
           description?: string
           id?: number
+          org_id?: number
           status?: Database["public"]["Enums"]["task_status"]
           title?: string
         }
@@ -257,6 +292,13 @@ export type Database = {
             columns: ["case_id"]
             isOneToOne: false
             referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organization"
             referencedColumns: ["id"]
           },
         ]
