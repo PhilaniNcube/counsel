@@ -6,6 +6,10 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
 import type { ExtendedMember } from "@/types";
 import type { Database } from "@/schema";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { DotSquareIcon, EllipsisIcon } from "lucide-react";
+import Link from "next/link";
 
 export const contactcolumns: ColumnDef<
 	Database["public"]["Tables"]["contacts"]["Row"]
@@ -80,5 +84,33 @@ export const contactcolumns: ColumnDef<
 			);
 		},
 	},
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => {
+      const { open, setOpen } = useHelpers();
+      const id = row.original.id;
+      return (
+        <DropdownMenu open={open} onOpenChange={setOpen} >
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost">
+              <EllipsisIcon />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuGroup>
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem>
+              <Link href={`/dashboard/clients/${id}`}>
+                View
+              </Link>
+            </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+
+  }
 
 ];

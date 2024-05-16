@@ -9,7 +9,6 @@ const ContactsTable = async () => {
 
   const { data: contacts, errors } = await getContacts();
 
-  console.log({contacts, errors})
 
   if(errors.length !== 0 || contacts === null) {
     return (

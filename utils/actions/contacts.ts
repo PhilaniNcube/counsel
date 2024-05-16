@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { createClient } from "../supabase/server";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { redirect } from "next/navigation";
 
 const contactSchema = z.object({
   first_name: z.string(),
@@ -78,7 +79,8 @@ export async function addContact(formData:FormData){
 
   console.log({contact})
 
-  revalidatePath("/dashboard/contacts");
+  revalidatePath("/dashboard/clients");
+  redirect("/dashboard/clients");
 
 
   return {

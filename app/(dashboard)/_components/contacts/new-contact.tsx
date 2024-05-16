@@ -5,7 +5,8 @@ import { Dialog, DialogContent, DialogFooter, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PlusIcon } from "lucide-react";
-import { useState } from "react";
+import { startTransition, useRef, useState, useTransition } from "react";
+
 import {
 	Select,
 	SelectContent,
@@ -15,9 +16,14 @@ import {
 } from "@/components/ui/select";
 import { SubmitButton } from "@/components/submit-button";
 import { addContact } from "@/utils/actions/contacts";
+import { useRouter } from "next/navigation";
 
 const NewContact = () => {
 	const [open, setOpen] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
+
+
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
@@ -29,7 +35,13 @@ const NewContact = () => {
 			<DialogContent className="py-10">
 				<div className="min-w-[200px]">
 					<DialogTitle>Add New Contact</DialogTitle>
-					<form action={addContact} className="@container mt-3">
+					<form action={(formData:FormData) => {
+            startTransition(() => {
+              addContact(formData);
+              router.refresh();
+              setOpen(false);
+            });
+          }} ref={formRef}  className="@container mt-3">
 						<div className="grid @sm:grid-cols-2 gap-x-3 gap-y-5">
 							<div className="flex flex-col w-full gap-2">
 								<Label htmlFor="first_name">First Name</Label>
