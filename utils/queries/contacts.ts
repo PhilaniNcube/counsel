@@ -48,3 +48,24 @@ export async function getContacts() {
   }
 
 }
+
+
+export async function getContact(id: number) {
+
+  const supabase = createClient();
+
+  const { data: contact, error } = await supabase.from("contacts").select("*").eq("id", id).single();
+
+  if (error) {
+    return {
+      errors: ["An error occurred, could not fetch the contact"],
+      data: null
+    }
+  }
+
+  return {
+    errors: null,
+    data: contact
+  }
+
+}

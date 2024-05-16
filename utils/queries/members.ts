@@ -11,9 +11,6 @@ export async function getMemebers(org_id: number) {
 			.eq("org_id", org_id)
 			.returns<ExtendedMember[]>();
 
-  console.log({ data, error });
-
-
   if (error || !data) {
     return {
       errors: ["An error occurred"],

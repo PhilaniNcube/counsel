@@ -84,7 +84,7 @@ export async function addContact(formData:FormData){
 
 
   return {
-    errors: [],
+    errors: null,
     data: contact
   }
 

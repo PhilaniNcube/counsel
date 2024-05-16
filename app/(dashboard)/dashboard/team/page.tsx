@@ -27,10 +27,8 @@ const page = async () => {
 
 
   return (
-			<div className="grid gap-2 md:grid-cols-2">
-
+			<div className="grid gap-2">
         {members ? <Team members={members} /> : null}
-
 			</div>
 		);
 };

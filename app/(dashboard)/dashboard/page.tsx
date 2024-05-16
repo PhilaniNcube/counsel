@@ -33,7 +33,7 @@ const page = async () => {
 									);
 								}
 
-				return <div className="grid gap-4 md:grid-cols-2">
+				return <div className="grid gap-4">
           <Team members={members} />
         </div>;
 };

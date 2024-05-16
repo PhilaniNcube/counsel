@@ -1,9 +1,29 @@
+import CaseSummary from "@/app/(dashboard)/_components/cases/case-summary";
 import NewCase from "@/app/(dashboard)/_components/cases/new-case";
+import ContactSummary from "@/app/(dashboard)/_components/contacts/contact-summary";
+import { Separator } from "@/components/ui/separator";
+import { getClientCases } from "@/utils/queries/cases";
 
-const page = ({ params: { id } }: { params: { id: number } }) => {
+const page = async ({ params: { id } }: { params: { id: number } }) => {
+
+
+
+  const {data, error} = await getClientCases(Number(id));
+
+  console.log(typeof id)
+
 	return (
 		<div>
-			<NewCase client_id={id} />
+			<div className="flex flex-row items-start justify-between">
+				<ContactSummary id={id} />
+				<NewCase client_id={id} />
+			</div>
+			<Separator className="my-2 bg-slate-300" />
+			<div className="">
+				{error || data === null
+					? null
+					: data.map((c) => <CaseSummary case={c} key={c.id} />)}
+			</div>
 		</div>
 	);
 };
