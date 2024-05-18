@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { Database } from "@/schema";
+import Link from "next/link";
 
 type CaseSummaryProps = {
   case: Database['public']['Tables']['cases']['Row']
@@ -11,7 +12,7 @@ const CaseSummary = ({
 
 
 	return (
-		<div className="max-w-xl p-6 bg-white rounded-lg shadow-md dark:bg-gray-950">
+		<Link href={`/dashboard/cases/${caseProp.id}`} className="max-w-xl cursor-pointer p-6 bg-white rounded-lg shadow-md dark:bg-gray-950">
 			<div className="flex items-center justify-between mb-4">
 				<h1 className="text-3xl font-bold text-gray-900 dark:text-gray-50">
 					Case: {caseProp.case_number}
@@ -46,7 +47,7 @@ const CaseSummary = ({
 					</p>
 				</div>
 			</div>
-		</div>
+		</Link>
 	);
 };
 export default CaseSummary;

@@ -1,6 +1,7 @@
 "use server"
 
 import { createClient } from "../supabase/server";
+import type { QueryResult, QueryData } from "@supabase/supabase-js";
 
 export async function getClientCases(client_id:number) {
 
@@ -113,7 +114,13 @@ export async function getCase(id:number) {
   }
 
   // get the the cases matching the org_id
-  const {data:cases, error:caseError} = await supabase.from("cases").select("*, client_id!inner(first_name, last_name)").eq("id", id).eq("org_id", member.org_id).single();
+  const caseWithClientQuery =  supabase.from("cases").select("*, contacts(created_at,first_name, last_name, email, phone, company, contact_type )").eq("id", id).eq("org_id", member.org_id).single();
+
+  type CaseWithClient = QueryData<typeof caseWithClientQuery>;
+
+  const {data:cases, error:caseError} = await caseWithClientQuery;
+
+  const caseData = cases as CaseWithClient;
 
   if(caseError || !cases) {
     return {
@@ -124,7 +131,7 @@ export async function getCase(id:number) {
 
   return {
     error: null,
-    data: cases
+    data: caseData
   }
 
 }

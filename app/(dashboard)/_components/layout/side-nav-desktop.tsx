@@ -25,7 +25,9 @@ const SideNavDesktop = () => {
 					href="/dashboard/team"
 					className={cn(
 						"flex items-center gap-3 px-3 py-2 transition-all rounded-lg text-muted-foreground hover:text-primary",
-						pathname === "/dashboard/team" ? "bg-slate-200" : "",
+						pathname.startsWith("/dashboard/team") === true
+							? "bg-slate-200"
+							: "",
 					)}
 				>
 					<HandIcon className="w-4 h-4" />
@@ -38,7 +40,9 @@ const SideNavDesktop = () => {
 					href="/dashboard/cases"
 					className={cn(
 						"flex items-center gap-3 px-3 py-2 transition-all rounded-lg text-muted-foreground hover:text-primary",
-						pathname === "/dashboard/cases" ? "bg-slate-200" : "",
+						pathname.startsWith("/dashboard/cases") === true
+							? "bg-slate-200"
+							: "",
 					)}
 				>
 					<Package className="w-4 h-4" />
@@ -48,7 +52,8 @@ const SideNavDesktop = () => {
 					href="/dashboard/clients"
 					className={cn(
 						"flex items-center gap-3 px-3 py-2 transition-all rounded-lg text-muted-foreground hover:text-primary",
-						pathname.startsWith("/dashboard/clients") === true ? "bg-slate-200"
+						pathname.startsWith("/dashboard/clients") === true
+							? "bg-slate-200"
 							: "",
 					)}
 				>

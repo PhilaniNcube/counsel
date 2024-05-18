@@ -11,6 +11,7 @@ export type Database = {
     Tables: {
       case_costs: {
         Row: {
+          case_id: number
           cost: number
           created_at: string
           description: string
@@ -19,6 +20,7 @@ export type Database = {
           title: string
         }
         Insert: {
+          case_id: number
           cost: number
           created_at?: string
           description: string
@@ -27,6 +29,7 @@ export type Database = {
           title: string
         }
         Update: {
+          case_id?: number
           cost?: number
           created_at?: string
           description?: string
@@ -35,6 +38,13 @@ export type Database = {
           title?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "case_costs_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "case_costs_org_id_fkey"
             columns: ["org_id"]
@@ -308,7 +318,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_total_cost_by_case_id: {
+        Args: {
+          case_id_param: number
+        }
+        Returns: number
+      }
     }
     Enums: {
       contact_type: "client" | "potential client" | "opposing counsel"

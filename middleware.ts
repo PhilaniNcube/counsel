@@ -12,14 +12,11 @@ export async function middleware(request: NextRequest) {
   // if the user is logged in, update the session
   if(user) return await updateSession(request);
 
-  const url = request.nextUrl.clone();
-
-
-  // if the user is not logged in, redirect to the login page
-  if(!url.pathname.startsWith("/sign-up") || url.pathname.startsWith("/login")){
-    return NextResponse.rewrite(new URL("/login", request.url));
-  }
-
+  // if the url starts with /dashboard and the user is not logged in, redirect to the login page
+  if(!user && request.nextUrl.pathname.startsWith("/dashboard")) {
+    const loginUrl = new URL("/login", request.nextUrl.origin);
+   return NextResponse.redirect(loginUrl);
+  };
 
   return NextResponse.next();
 

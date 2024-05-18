@@ -36,6 +36,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import SideNavDesktop from "./_components/layout/side-nav-desktop";
 import SideNavMobile from "./_components/layout/side-nav-mobile";
 import UserNav from "./_components/layout/user-nav";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
  const Dashboard = ({children}:{children:React.ReactNode}) => {
 	return (
@@ -91,7 +92,10 @@ import UserNav from "./_components/layout/user-nav";
 					<UserNav />
 				</header>
 				<main className="flex flex-col flex-1 gap-4 p-4 lg:gap-6 lg:p-6">
-					{children}
+          <ScrollArea className="h-[85vh] w-full">
+					  {children}
+            <ScrollBar />
+          </ScrollArea>
 				</main>
 			</div>
 		</div>
