@@ -9,8 +9,10 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { SubmitButton } from "../submit-button";
+import { toast } from "sonner";
+import { forgotPassword } from "@/utils/actions/auth";
+import { startTransition } from "react";
 
 const ForgotPasswordForm = () => {
 	return (
@@ -24,13 +26,21 @@ const ForgotPasswordForm = () => {
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<form className="grid gap-4">
+					<form action={(formData:FormData) => {
+
+            startTransition(() => {
+               forgotPassword(formData);
+               toast("Success! Check your email to reset your password");
+              })
+
+          }} className="grid gap-4">
 						<div>
 							<Label className="mb-2" htmlFor="email">
 								Email
 							</Label>
 							<Input
 								id="email"
+                name="email"
 								placeholder="name@example.com"
 								required
 								type="email"

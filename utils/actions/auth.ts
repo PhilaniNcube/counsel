@@ -96,3 +96,72 @@ export const signOut = async () => {
 
       redirect("/");
 };
+
+const forgotPasswordSchema = z.object({
+  email: z.string().email(),
+})
+
+export const forgotPassword = async (formData:FormData) => {
+
+      const supabase = createClient();
+
+      const { email } = Object.fromEntries(formData.entries());
+
+      const validatedFields = forgotPasswordSchema.safeParse({
+        email: email,
+      });
+
+      if (!validatedFields.success) {
+        // return flattened errors
+        console.log(validatedFields.error.flatten().fieldErrors);
+        return validatedFields.error.flatten().fieldErrors;
+      }
+
+      const { error } = await supabase.auth.resetPasswordForEmail(validatedFields.data.email);
+
+      console.log(error);
+
+      if (error) {
+        return "An error occurred";
+      }
+
+      return "Success! Check your email to reset your password";
+
+};
+
+
+const resetPasswordSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+})
+
+export async function resetPassword(formData:FormData) {
+
+      const supabase = createClient();
+
+      const values = Object.fromEntries(formData.entries());
+
+      const validatedFields = resetPasswordSchema.safeParse({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (!validatedFields.success) {
+        // return flattened errors
+        return validatedFields.error.flatten().fieldErrors;
+      }
+
+      const { error, data } = await supabase.auth.updateUser({
+        email: validatedFields.data.email,
+        password: validatedFields.data.password,
+      });
+
+      console.log({error, data});
+
+      if (error) {
+        return "An error occurred";
+      }
+
+      return "Success! Your password has been reset";
+
+}
