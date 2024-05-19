@@ -31,8 +31,12 @@ export const signUp = async (formData:FormData) => {
 				email: validatedFields.data.email,
 				password: validatedFields.data.password,
 				options: {
+          emailRedirectTo: "https://counsel.vercel.app/dashboard/account/settings",
 					data: {
 						full_name: validatedFields.data.full_name,
+						redirect_to:
+							"https://counsel.vercel.app/dashboard/account/settings",
+
 					},
 				},
 			});
@@ -40,6 +44,7 @@ export const signUp = async (formData:FormData) => {
 			if (error || !data) {
 				return "An error occurred";
 			}
+
 
 			return "Success! Check your email to verify your account";
 

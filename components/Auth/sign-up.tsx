@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,6 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SubmitButton } from "@/components/submit-button";
 import { signUp } from "@/utils/actions/auth";
+import { startTransition } from "react";
+import { toast } from "sonner";
 
 export function SignUp() {
 	return (
@@ -22,7 +26,17 @@ export function SignUp() {
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<form action={signUp}>
+				<form action={(formData:FormData) => {
+
+          startTransition(() => {
+            signUp(formData);
+            toast("Please check your email to verify your account.", {
+              position: "top-center",
+              duration: 5000,
+            });
+          });
+
+        }}>
 					<div className="grid gap-4">
 						<div className="grid gap-4">
 							<div className="grid gap-2">
