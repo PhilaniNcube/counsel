@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Home, LineChart, Menu, Package, Package2, ShoppingCart, Users } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const SideNavMobile = () => {
@@ -21,8 +22,14 @@ const SideNavMobile = () => {
 							href="#"
 							className="flex items-center gap-2 text-lg font-semibold"
 						>
-							<Package2 className="w-6 h-6" />
-							<span className="sr-only">Acme Inc</span>
+							<Image
+								src="/images/scale.webp"
+								width={500}
+								height={500}
+								alt="Counsel"
+								className="w-6 h-6"
+							/>
+							<span className="font-extrabold">Counsel</span>
 						</Link>
 						<Link
 							href="#"

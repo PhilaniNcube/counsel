@@ -37,6 +37,7 @@ import SideNavDesktop from "./_components/layout/side-nav-desktop";
 import SideNavMobile from "./_components/layout/side-nav-mobile";
 import UserNav from "./_components/layout/user-nav";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import Image from "next/image";
 
  const Dashboard = ({children}:{children:React.ReactNode}) => {
 	return (
@@ -45,8 +46,8 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 				<div className="flex flex-col h-full max-h-screen gap-2">
 					<div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
 						<Link href="/" className="flex items-center gap-2 font-semibold">
-							<Package2 className="w-6 h-6" />
-							<span className="">Acme Inc</span>
+							<Image src="/images/scale.webp" width={500} height={500} alt="Counsel" className="w-6 h-6" />
+							<span className="font-extrabold">Counsel</span>
 						</Link>
 						<Button variant="outline" size="icon" className="w-8 h-8 ml-auto">
 							<Bell className="w-4 h-4" />
