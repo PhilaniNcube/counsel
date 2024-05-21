@@ -2,8 +2,11 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { formatCurrency } from "@/lib/utils";
 import { getCaseCostsById, getTotalCaseCost } from "@/utils/queries/case-costs";
 import { getCase } from "@/utils/queries/cases";
+import { getTasksByCaseId } from "@/utils/queries/tasks";
 import { CheckIcon, Hourglass, XIcon } from "lucide-react";
 import { notFound } from "next/navigation";
+import Tasks from "../tasks/tasks";
+import { getMemberId } from "@/utils/queries/members";
 
 const CaseDetails = async ({ id }: { id: number }) => {
 	const caseDataPromise =  getCase(id);
@@ -20,20 +23,22 @@ const CaseDetails = async ({ id }: { id: number }) => {
 
   const { data:totalCosts, error:totalCostError  } = totalCostData;
 
-  console.log({totalCosts})
+  const memberId = await getMemberId();
+
+  const { data: tasks, error: tasksError } = await getTasksByCaseId(Number(id));
 
 	if (error || !data) {
 		notFound();
 	}
 
 	return (
-		<div className=" py-6 md:py-8  rounded-md shadow-md grid md:grid-cols-2 gap-3">
-			<div className="prose prose-gray mx-auto dark:prose-invert bg-zinc-100 p-6 relative">
+		<div className="grid gap-3 py-6 rounded-md shadow-md md:py-8 md:grid-cols-2">
+			<div className="relative p-6 mx-auto prose prose-gray dark:prose-invert bg-zinc-100">
 				<div className="space-y-2 not-prose ">
 					<h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl lg:leading-[3.5rem]">
 						{data.description}
 					</h1>
-					<div className="flex  items-center gap-4 text-sm">
+					<div className="flex items-center gap-4 text-sm">
 						<div>
 							<span className="font-bold">Case #:</span>
 							{data.case_number}
@@ -51,13 +56,13 @@ const CaseDetails = async ({ id }: { id: number }) => {
 							{data.end_date ? data.end_date : "---"}
 						</div>
 						{data.completed === true ? (
-							<div className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-green-900 dark:bg-green-900 dark:text-green-100 absolute top-3 right-4">
-								<CheckIcon className="mr-2 h-4 w-4" />
+							<div className="absolute inline-flex items-center px-3 py-1 text-green-900 bg-green-100 rounded-full dark:bg-green-900 dark:text-green-100 top-3 right-4">
+								<CheckIcon className="w-4 h-4 mr-2" />
 								Completed
 							</div>
 						) : (
-							<div className="absolute top-3 right-4 inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-red-900 dark:bg-red-900 dark:text-red-100">
-								<Hourglass className="mr-2 h-4 w-4" />
+							<div className="absolute inline-flex items-center px-3 py-1 text-red-900 bg-red-100 rounded-full top-3 right-4 dark:bg-red-900 dark:text-red-100">
+								<Hourglass className="w-4 h-4 mr-2" />
 								Pending
 							</div>
 						)}
@@ -67,25 +72,25 @@ const CaseDetails = async ({ id }: { id: number }) => {
 					<h2 className="text-2xl font-bold">Contact Details</h2>
 					<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 						<div className="space-y-2">
-							<div className="font-semibold text-xl">Name</div>
+							<div className="text-xl font-semibold">Name</div>
 							<div>
 								{data.contacts?.first_name} {data.contacts?.last_name}
 							</div>
 						</div>
 						<div className="space-y-2">
-							<div className="font-semibold text-xl">Email</div>
+							<div className="text-xl font-semibold">Email</div>
 							<div>samurai@jackson.com</div>
 						</div>
 						<div className="space-y-2">
-							<div className="font-semibold text-xl">Phone</div>
+							<div className="text-xl font-semibold">Phone</div>
 							<div>031556982</div>
 						</div>
 						<div className="space-y-2">
-							<div className="font-semibold text-xl">Company</div>
+							<div className="text-xl font-semibold">Company</div>
 							<div>Cartoon Network</div>
 						</div>
 						<div className="space-y-2">
-							<div className="font-semibold text-xl">Contact Type</div>
+							<div className="text-xl font-semibold">Contact Type</div>
 							<div>opposing counsel</div>
 						</div>
 					</div>
@@ -103,7 +108,7 @@ const CaseDetails = async ({ id }: { id: number }) => {
 				<div className="grid grid-cols-1 gap-4">
 					{caseCostsError || caseCosts === null || caseCosts.length === 0 ? (
 						<div>
-							<div className="bg-white rounded-md shadow-md p-4">
+							<div className="p-4 bg-white rounded-md shadow-md">
 								<h3 className="text-xl font-semibold">No Case Costs</h3>
 								<p className="text-gray-500">
 									There are no costs associated with this case
@@ -114,7 +119,7 @@ const CaseDetails = async ({ id }: { id: number }) => {
 						caseCosts.map((cost) => (
 							<div
 								key={cost.id}
-								className="bg-slate-50 rounded-md shadow-md p-4"
+								className="p-4 rounded-md shadow-md bg-slate-50"
 							>
 								<div className="flex items-center justify-between">
 									<h3 className="text-xl font-semibold">{cost.title}</h3>
@@ -127,6 +132,9 @@ const CaseDetails = async ({ id }: { id: number }) => {
 						))
 					)}
 				</div>
+			</div>
+			<div className="col-span-2">
+				<Tasks case_id={id} member_id={memberId || 1} tasks={tasks || []} />
 			</div>
 		</div>
 	);

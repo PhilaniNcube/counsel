@@ -3,6 +3,7 @@ import NewCase from "@/app/(dashboard)/_components/cases/new-case";
 import ContactSummary from "@/app/(dashboard)/_components/contacts/contact-summary";
 import { Separator } from "@/components/ui/separator";
 import { getClientCases } from "@/utils/queries/cases";
+import { getTasksByCaseId } from "@/utils/queries/tasks";
 
 const page = async ({ params: { id } }: { params: { id: number } }) => {
 
@@ -10,7 +11,8 @@ const page = async ({ params: { id } }: { params: { id: number } }) => {
 
   const {data, error} = await getClientCases(Number(id));
 
-  console.log(typeof id)
+
+
 
 	return (
 		<div>
