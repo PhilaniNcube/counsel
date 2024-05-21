@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Database } from "@/schema";
 import Link from "next/link";
@@ -12,15 +13,22 @@ const CaseSummary = ({
 
 
 	return (
-		<Link href={`/dashboard/cases/${caseProp.id}`} className="max-w-xl cursor-pointer p-6 bg-white rounded-lg shadow-md dark:bg-gray-950">
+		<div className="p-4 rounded-md shadow-lg bg-slate-100">
 			<div className="flex items-center justify-between mb-4">
+        <Link href={`/dashboard/cases/${caseProp.id}`}>
+          <Button className="rounded-full" >
+            View Case
+          </Button>
+        </Link>
 				<h1 className="text-3xl font-bold text-gray-900 dark:text-gray-50">
 					Case: {caseProp.case_number}
 				</h1>
 				<div
 					className={cn(
 						"px-3 py-1 text-sm font-medium  rounded-full ",
-            caseProp.completed ? "bg-green-100 text-green-800" : "bg-zinc-100 text-zinc-800"
+						caseProp.completed
+							? "bg-green-100 text-green-800"
+							: "bg-zinc-100 text-zinc-800",
 					)}
 				>
 					{caseProp.completed ? "Completed" : "In Progress"}
@@ -47,7 +55,7 @@ const CaseSummary = ({
 					</p>
 				</div>
 			</div>
-		</Link>
+		</div>
 	);
 };
 export default CaseSummary;
