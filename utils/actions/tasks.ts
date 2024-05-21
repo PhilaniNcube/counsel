@@ -124,7 +124,7 @@ export async function createTask(prevState: PrevState, formData:FormData) {
         assignee: members.id,
         status: "not started",
       },
-    ])
+    ]).select("*")
     .single();
 
     console.log({data, taskError})
